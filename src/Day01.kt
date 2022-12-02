@@ -1,17 +1,46 @@
+import java.util.PriorityQueue
+import kotlin.math.max
+
 fun main() {
+    val input = readInput("inputDay01")
+
     fun part1(input: List<String>): Int {
-        return input.size
+        val caloriesList = mutableListOf<Int>()
+        var maxCalories = 0
+        for (str in input) {
+            if (str.isEmpty()) {
+                val curElfCalories = caloriesList.sum()
+                maxCalories = max(maxCalories, curElfCalories)
+                caloriesList.clear()
+            } else {
+                caloriesList.add(str.toInt())
+            }
+        }
+        return maxCalories
     }
+
 
     fun part2(input: List<String>): Int {
-        return input.size
+        val caloriesList = mutableListOf<Int>()
+        val minHead = PriorityQueue<Int>(3)
+
+        for (str in input) {
+            if (str.isEmpty()) {
+                val curElfCalories = caloriesList.sum()
+                caloriesList.clear()
+                minHead.add(curElfCalories)
+                if (minHead.size > 3) {
+                    minHead.poll()
+                }
+            } else {
+                caloriesList.add(str.toInt())
+            }
+        }
+        return minHead.sum()
     }
 
-    // test if implementation meets criteria from the description, like:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
 
-    val input = readInput("Day01")
-    println(part1(input))
     println(part2(input))
+
+
 }
